@@ -15,7 +15,7 @@ const register = async (req, res, next) => {
     const salt = bcrypt.genSaltSync(10);
     const passwrodHash = bcrypt.hashSync(password, salt);
 
-    if (rowCount) {
+    if (rowCount || rowCount === null) {
       return next(createError(403, "user sudah terdaftar"));
     }
     const data = {
@@ -40,7 +40,7 @@ const login = async (req, res, next) => {
       rows: [user],
     } = await findByEmail(email);
 
-    if (!user) {
+    if (!user || user.email === "") {
       return commonHelper.response(res, null, 403, "email atau password anda salah");
     }
     const validPassword = bcrypt.compareSync(password, user.password);
@@ -71,7 +71,6 @@ const profile = async (req, res, next) => {
   commonHelper.response(res, user, 200);
 };
 
-const deleteUser = async (req, res, next) => {};
 const getUsers = async (req, res, next) => {
   const idUser = req.decoded.id;
   const { rows } = await modelGetUsers(idUser);

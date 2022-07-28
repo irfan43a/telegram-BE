@@ -38,9 +38,7 @@ app.use((err, req, res, next) => {
 });
 
 const httpServer = http.createServer(app);
-const PORT = 4000;
-// app.use(cors())
-// app.use('/v1', route)
+const PORT = process.env.PORT;
 const io = new Server(httpServer, {
   cors: {
     origin: "http://localhost:3000",
@@ -95,7 +93,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log(`ada perangkat yg terputus dengan id ${socket.id}`);
+    console.log(`ada perangkat yg terputus dengan id ${socket.id} dan id usernya ${socket.userId}`);
   });
 });
 
@@ -103,7 +101,7 @@ httpServer.listen(PORT, () => {
   console.log(`server is running in port ${PORT}`);
 });
 
-// contoh Pertama
+// Contoh Pertama
 // const express = require("express");
 // const { Server } = require("socket.io");
 

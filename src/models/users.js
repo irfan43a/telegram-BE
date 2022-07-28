@@ -28,6 +28,7 @@ const getUsers = (idUser) => {
       if (!error) {
         resolve(result);
       } else {
+        console.log(error);
         reject(error);
       }
     });
