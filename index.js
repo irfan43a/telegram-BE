@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
     //   credentials: true,
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://telekilos-app.netlify.app"],
   })
 );
 app.use(morgan("dev"));
@@ -41,7 +41,7 @@ const httpServer = http.createServer(app);
 const PORT = process.env.PORT;
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://telekilos-app.netlify.app"],
   },
 });
 
@@ -74,7 +74,7 @@ io.on("connection", (socket) => {
     socket.broadcast.to(`room:${room}`).emit("notifAdmin", {
       sender: "Admin",
       message: `${username} bergabung dalam group`,
-      date: new Date().getHours() + ":" + new Date().getMinutes(),
+      date: new Date("2015-03-25T12:00:00Z"),
     });
   });
 
@@ -83,7 +83,7 @@ io.on("connection", (socket) => {
       receiver_id: idReceiver,
       message: messageBody,
       sender_id: socket.userId,
-      created_at: new Date(),
+      created_at: new Date().getHours() + ":" + new Date().getMinutes(),
     };
     console.log(message);
     callback({ ...message, created_at: moment(message.created_at).format("LT") });
