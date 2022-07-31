@@ -74,16 +74,29 @@ io.on("connection", (socket) => {
     socket.broadcast.to(`room:${room}`).emit("notifAdmin", {
       sender: "Admin",
       message: `${username} bergabung dalam group`,
-      date: new Date("2015-03-25T12:00:00Z"),
+      date: new Date().getHours() + ":" + new Date().getMinutes(),
     });
   });
 
+  // socket.on("sendMessage", ({ idReceiver, messageBody }, callback) => {
+  //   const message = {
+  //     receiver_id: idReceiver,
+  //     message: messageBody,
+  //     sender_id: socket.userId,
+  //     created_at: new Date(),
+  //   };
+  //   console.log(message);
+  //   callback({ ...message, created_at: moment(message.created_at).format("LT") });
+  //   messageModel.create(message).then(() => {
+  //     socket.broadcast.to(idReceiver).emit("newMessage", message);
+  //   });
+  // });
   socket.on("sendMessage", ({ idReceiver, messageBody }, callback) => {
     const message = {
       receiver_id: idReceiver,
       message: messageBody,
       sender_id: socket.userId,
-      created_at: new Date().getHours() + ":" + new Date().getMinutes(),
+      created_at: new Date(),
     };
     console.log(message);
     callback({ ...message, created_at: moment(message.created_at).format("LT") });
